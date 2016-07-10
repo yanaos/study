@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>js笔记</title>
+</head>
+<body>
+
+
+<script>
+		//最好的做法是把 js标签 放到html文档最后,(/body)标签之前
+
+		//js变量区分大小写
+
+		//函数名,方法名,对象属性名 惯例用---驼峰命名
+
+		//转译符是(\)反斜杠 例如 'I don't kown'---应该写成 'I don\'t kown'
+</script>
+
+js对象只是带有属性和方法的 特殊储存数据类型 比数组更大一个级别的储存容器 ---w3c
+
+php要创建一个新对象，使用 new 语句实例化一个类得到
+
+感觉js的对象 就像 php的类  但js的对象只是带有属性和方法的特殊储存数据类型
+
+js 用 new 实例化对象,得到一个对象的实例
+
+js所有事物 字符串、数值、数组、函数...都是某种类型的对象---p18
+js变量 就是某种类型的对象
+
+php的变量不能是类, php变量 可以是 new一个类得到的实例化
+   <!-- 比如一个变量是数组,那他就是Array类型的对象
+			一个变量是布尔值,那他就是Boolean类型的对象 -->
+<script>
+//声明数组
+	var arr = Array(); //---注意:A必须大写 否则不是声明数组
+		arr[0]="aa";
+		arr[1]="bb";
+		arr[2]="cc";
+
+	var arr2 = [];      //这也是声明数组,
+		arr2[0]="aa";
+		arr2[1]="bb";
+		arr2[2]="cc";
+
+	var arr3 = ["a","b","c"]; 这也是声明数组
+
+						//数组的元素可以是对象,数组
+
+//遍历数组 要用数组的array.length属性
+
+//关联数组
+	//本质上
+	//关联数组中的键,其实就是一个Array类的对象的属性
+	//关联数组中的值,其实就是一个Array类的对象的属性值
+
+	var arr3 = [];      
+		arr3['name']="aa";
+		arr3['sex']="bb";
+		arr3['age']="cc";
+
+
+//对象
+		//与数组类似,一个名字表示一组值,对象的每个值都是对象的一个属性
+
+//声明对象
+	var obj = Object();   //对比声明数组
+		obj.name = "aa";
+		obj.sex = "bb";
+		obj.age = "cc";
+
+	var obj2 = {};      //对比声明数组[],
+		obj2.name ="aa";
+		obj2.sex ="bb";
+		obj2.age ="cc";
+
+	var obj3 = {name:"aa", age:33, wedding:true };	//属性不用引号,属性值用引号
+
+//数组元素是对象的情况
+	var arr4 = [];      
+		arr4[0] = obj2;
+
+		alert(arr4[0].name);   //---重点--- 这样取到的值是aa 不能写成arr4[0][0]------重点
+
+
+// 对象的属性和方法都用点连接
+	var Person = Object();
+		Person.age;
+		Person.walk();
+
+//对象的实例 可以直接使用对象中的属性和方法
+		var yan = new Person();
+			yan.age;
+			yan.walk();		
+
+//从对象 和数组 的对比可以看出,不推荐用关联数组,关联数组其实就是对象,关联数组的元素,就是对象的属性,而对象一般不应该修改属性,而应该使用通用的对象
+
+
+
+//加号(+)
+		// 两个数值用+号 结果是求和
+		// 两个字符串用+号 结果是拼接字符串
+		// 一个数值 + 一个字符串 结果是拼接字符串--------------重点
+
+
+//函数  用 参数 来接收数据 用 return 来返回数据
+		// 函数的真正价值,可以把函数的调用结果赋给一个变量
+		
+		// var fun = 函数名(参数); 注意驼峰法函数名
+
+//作用域
+		// 在函数外面 var 就是全局变量
+		// 在函数里面 var 就是局部变量
+
+
+
+
+//DOM 是通用API----DOM适用任何标记语言,不仅限于web
+
+	// 把网页文档 转成对象的形式,每一个元素都是一个对象----------重点
+
+	// 节点---好像是从不同3个方面,描述文档的某同一块部分
+			//元素节点 
+			//文本节点 
+			//属性节点 
+
+		//获得元素---三个DOM方法 
+					// document对象的方法
+						  var abc = document.getElementById("id");       //返回一个对象, id名必须引号
+									document.getElementsByTagName(""); 
+												//返回一个数组,数组中每个元素都是一个对象,
+												//即使只有一个元素 
+													document.getElementsByTagName("name")[0]
+									document.getElementsByClassame(""); //同上
+
+
+		//获得,设置属性
+					// getAttribute() setAttribute() 不属于document对象 不能通过document调用
+					//是(元素节点对象) 的方法
+							  abc.getAttribut("属性名");
+							  abc.setAttribut("属性名","属性值");
+
+
+					//非DOM方法 .value .src 不推荐使用,不是所有属性都可以这样写.
+
+
+
+
+// 事件处理函数event handler---(注意:① onclick这些事件,它们都是函数.
+								   //② handler英文翻译是句柄,处理者,从这里看handler就是函数)
+</script>				
+				<a href="http://www.baidu.com" onclick = "showPic(this); return false;"></a>
+
+			<!--  onclick = ""
+							引号里是函数体,里面放js代码
+							引号里的代码,可以有返回值, 返回值返给 onclick事件函数,返回false 不执行链接
+							用(;)分号间隔
+							this 表示这个<a>元素节点
+			 -->
+
+<script>
+// if(something != null) 不等于空
+// if(something) 		 两者等价
+
+window.onload = 函数名;//页面加载时执行这个函数
+
+</script>
+</body>
+</html>
