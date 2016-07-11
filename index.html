@@ -157,22 +157,41 @@ php的变量不能是类, php变量 可以是 new一个类得到的实例化
 							用(;)分号间隔
 							this 表示这个<a>元素节点
 			 -->
-
+				搜索引擎不理解js,所以跳转链接不要写成 href="#"
+										   也不要写成 href="javascript:"伪协议
+										   以上不利于搜索引擎抓取
+										   
+										   应该这样写 href="http://www.baidu.com"
+										   
 <script>
 // if(something != null) 不等于空
 // if(something) 		 两者等价
 
-window.onload = 函数名;//刷新页面就会执行这个函数---页面加载时,执行这个函数---直接写函数名后面不用写括号
+window.onload = 函数名;//<body onload="load()">等效
 
+//页面加载之后立即执行一段 JS---直接写函数名后面不用写括号
+//一旦完全加载所有内容（包括图像、脚本文件、CSS 文件等），就执行一段脚本。
 
+//childNodes
+	document.body.childNodes;
+	//childNodes 属性返回节点的子节点集合
 
-document.body.childNodes;
-//childNodes 属性返回节点的子节点集合
+//nodeValue
+	element.childNodes[0].nodeValue//获取
+	element.childNodes[0].nodeValue = value//设置
+	
+	//如果想返回元素的文本，请记住---元素内的文本是文本节点,必须返回元素的首个子节点--文本节点的值,
+	//文本节点是元素的第一个子节点
+	
+//firstChild和lastChild
 
-element.childNodes[0].nodeValue
-//如果想返回元素的文本，请记住---元素内的文本是文本节点,必须返回元素的首个子节点--文本节点的值,
-//文本节点是元素的第一个子节点
-
+//减少查询 DOM次数
+		//只要查询DOM中的某些元素,浏览器就会搜索整个DOM树
+		//避免重复查询,把查询结果放到变量里
+		
+		
+//js与html标签分离
+				
 </script>
 </body>
 </html>
