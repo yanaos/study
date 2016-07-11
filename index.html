@@ -162,7 +162,16 @@ php的变量不能是类, php变量 可以是 new一个类得到的实例化
 // if(something != null) 不等于空
 // if(something) 		 两者等价
 
-window.onload = 函数名;//页面加载时执行这个函数
+window.onload = 函数名;//刷新页面就会执行这个函数---页面加载时,执行这个函数---直接写函数名后面不用写括号
+
+
+
+document.body.childNodes;
+//childNodes 属性返回节点的子节点集合
+
+element.childNodes[0].nodeValue
+//如果想返回元素的文本，请记住---元素内的文本是文本节点,必须返回元素的首个子节点--文本节点的值,
+//文本节点是元素的第一个子节点
 
 </script>
 </body>
