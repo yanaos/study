@@ -205,14 +205,35 @@ window.onload = 函数名;//<body onload="load()">等效
 	
 //firstChild和lastChild
 
+//nodeName
+		//document.body.nodeName;获得 body 元素的节点名称
+
+
+
 //减少查询 DOM次数
 		//只要查询DOM中的某些元素,浏览器就会搜索整个DOM树
 		//避免重复查询,把查询结果放到变量里
 		
 		
+</script>
+
+//三元运算符
+			<a href="http://www.baidu.com" onclick = "return showPic(this) ? false : true;"></a>
+			<!--如果 showPic(this)结果为真,就返回假;如果为假,就返回真-->
+			<!--意思就是如果浏览器支持js就阻止跳转链接,如果不支持js就执行a链接跳转-->
+				
+<script>
+
+document.write("<p>abc</p>");//把字符串写到文档中,
 
 
+//Object.innerHTML 
+//				设置或读取元素对象里的值,它不像element.childNodes[0].nodeValue分的那么细
+//				全部替换掉原有内容
 
+推荐用innerHTML 替代 document.write()
+								  document.write(); 无法在指定位置添加内容,只能在哪添加,就在哪里引入js
+								  Object.innerHTML 给指定对象添加文本  有利于html和js分离
 </script>
 </body>
 </html>
