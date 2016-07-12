@@ -149,28 +149,48 @@ php的变量不能是类, php变量 可以是 new一个类得到的实例化
 // 事件处理函数event handler---(注意:① onclick这些事件,它们都是函数.
 								   //② handler英文翻译是句柄,处理者,从这里看handler就是函数)
 </script>				
-				<a href="http://www.baidu.com" onclick = "showPic(this); return false;"></a>
-
-			<!--  onclick = ""
-							引号里是函数体,里面放js代码
-							引号里的代码,可以有返回值, 返回值返给 onclick事件函数,返回false 不执行链接
-							用(;)分号间隔
-							this 表示这个<a>元素节点
-			 -->
-				搜索引擎不理解js,所以跳转链接不要写成 href="#"
-										   也不要写成 href="javascript:"伪协议
-										   以上不利于搜索引擎抓取
-										   
-										   应该这样写 href="http://www.baidu.com"
-										   
+				<!--JS和html混合在一起使用-->
+						<a href="http://www.baidu.com" onclick = "showPic(this); return false;"></a>
+		
+						<!--  onclick = ""
+										引号里是函数体,里面放js代码
+										引号里的代码,可以有返回值, 返回值返给 onclick事件函数,返回false 不执行链接
+										用(;)分号间隔
+										this 表示这个<a>元素节点
+						 -->
+						搜索引擎不理解js,所以跳转链接不要写成 href="#"
+												   也不要写成 href="javascript:"伪协议
+												   以上不利于搜索引擎抓取
+												   
+												   应该这样写 href="http://www.baidu.com"										   
 <script>
+				//JS与html标签分离
+						var getid = document.getElementById("aa");//取id元素
+						var links = getid.getElementsByTagName("a");//取id元素里的所有a标签
+						
+						for(var i = 0;i<links.length;i++){//用循环给每个a加onclick事件
+							
+								links[i].onclick = function(){//------匿名函数
+									showPic(this);
+									return false;//阻止a跳转
+								}
+						}
+
+
+
 // if(something != null) 不等于空
 // if(something) 		 两者等价
 
 window.onload = 函数名;//<body onload="load()">等效
-
-//页面加载之后立即执行一段 JS---直接写函数名后面不用写括号
-//一旦完全加载所有内容（包括图像、脚本文件、CSS 文件等），就执行一段脚本。
+			
+				//页面加载完毕后,触发onload事件---直接写函数名后面不用写括号
+				//一旦完全加载所有内容（包括图像、脚本文件、CSS 文件等），就执行一段脚本。
+				
+	//多个函数加载
+	window.onload = function(){
+		firstFunction();
+		secondFunction();
+	}
 
 //childNodes
 	document.body.childNodes;
@@ -190,8 +210,9 @@ window.onload = 函数名;//<body onload="load()">等效
 		//避免重复查询,把查询结果放到变量里
 		
 		
-//js与html标签分离
-				
+
+
+
 </script>
 </body>
 </html>
