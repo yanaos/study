@@ -191,6 +191,113 @@ window.onload = 函数名;//<body onload="load()">等效
 		firstFunction();
 		secondFunction();
 	}
+	
+	
+//addLoadEvent 函数
+					//用于页面内触发 onload 事件时执行多个任务。
+
+//首先来梳理一下函数代码
+function addLoadEvent(func){ 
+//将函数作为参数，此函数就是 onload 触发时需要执行的某个函数
+    var oldonload=window.onload; 
+    //将原来的 onload 的值赋给临时变量 oldonload。
+    if(typeof window.onload!="function"){//注意 先得到typeof window.onload的结果 再去!=比较 
+    //判断 onload 的类型是否是 function。如果已经执行window.onload=function(){...} 已经被赋值，那么此时 onload 的类型就是 function
+    //否，则说明 onload 还没有被赋值，当前任务 func 就为第一个加入的任务
+        window.onload=func(); //作为第一个任务，给 onload 赋值
+    }else{ 
+    //是，则说明 onload 已被赋值，onload 中先前已有任务加入
+        window.onload=function(){
+            oldonload();
+            func(); //作为后续任务，追加到先前任务oldonload();后面
+        }
+    }
+}
+
+//再来看一个实例。假如需要在 onload 时执行两个任务，分别为 func1 和 func2。
+function func1(){
+   //...
+}
+function func2(){
+   //...
+}
+
+//如果不用 addLoadEvent 函数，那么很有可能会出现下面这样错误的写法。
+// do something
+window.onload=func1();
+// do something
+window.onload=func2();
+
+//这样的后果就会是，onload 的值会被最后一次赋值覆盖，func1 将不会执行，只会执行 func2。
+
+//所以正确的写法应该是：
+window.onload=function(){
+    func1(); // 我们人为判断 func1 是第一个任务
+    func2();
+}
+
+//以上就是 addLoadEvent 函数流程的最简单形式。出于功能模块封装的考虑，我们将判断 onload 是否被赋值的功能交由模块内部处理
+//因此形成了这个函数。最佳的写法就是：
+addLoadEvent(func1);
+// do something
+addLoadEvent(func2);
+
+oldonload 只在 onload 已经被赋值（即至少已经有一个任务）的情况下才有效，它只是起一个传递作用——将原有 onload 的值（即之前的一个或多个任务）放在后续任务之前；
+
+
+//为什么func和oldonload后面的括号“()”可以写也可以不写啊？那个才是标准。
+
+//在 JavaScript 中一切都是对象，包括函数也是，这是 JavaScript 的内部实现决定的。比如下面的函数定义：
+function fn(name){
+    alert('Hello '+name);
+    return 0;
+}
+
+//可以理解为名为 fn 的函数对象变量，fn 即为变量名。事实上，上述函数的定义还可以这样写：
+var fn=new Function("name","alert('Hello '+name);return 0;");
+//Function([strParamName1,strParamName2,...],strFunctionBody)
+
+//通过这个例子，就可以很容易地看出函数的本来面目。
+
+//因为函数名是就是变量名，因此可以和其他普通变量一样进行作赋值操作：
+var sayHello=fn;
+
+//只要给函数对象变量后加上括号，就可以使用函数了：
+fn("World"); //alert "Hello World"
+sayHello("WANGERN"); //alert "Hello WANGERN"
+
+//很好理解，括号是执行函数的运算符。如果我们要将函数作为变量处理，那么就不需要括号，只有要执行函数时才加上括号，这就是 func 和 oldonload 函数括号时有时无的原因。
+
+//最后，理解一下下面两个赋值操作结果的区别：
+var obj1=sayHello; //obj1 为函数对象的引用
+var obj2=sayHello(); //obj2 为函数返回值------------------------注意
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 //childNodes
 	document.body.childNodes;
