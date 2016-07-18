@@ -286,7 +286,8 @@ var obj2=sayHello(); //obj2 加()括号,为立刻调用函数,得到返回值---
 	
 	//如果想返回元素的文本，请记住---元素内的文本是文本节点,必须返回元素的首个子节点--文本节点的值,
 	//文本节点是元素的第一个子节点
-	
+	element.childNodes[0].childNodes[0].nodeValue;//子节点的子节点
+	//不能写成  element.childNodes[0][0].nodeValue;这是错的
 //firstChild和lastChild
 
 //nodeName
