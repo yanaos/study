@@ -347,9 +347,13 @@ document.write("<p>abc</p>");//把字符串写到文档中,
 						parent.insertBefore(newElement,targetElement.nextSibling)
 					}
 				}
+//parentNode
+//childNodes
+//firstChild
+//lastChild
 
-//nextSibling
-
+//nextSibling       下一个同级节点  不一定是元素节点 也可能是文本节点
+//previousSibling   前一个同级节点
 
 //Ajax
 		//XMLHttpRequest对象
@@ -357,6 +361,18 @@ document.write("<p>abc</p>");//把字符串写到文档中,
 		
 
 
+
+
+
+//style样式 是对象----------注意
+
+//				只能取到内联的style样式值, 
+//              外部引用文件 和 head中的style都取不到
+
+				element.style.color;//获取样式
+				element.style.color = "#fff";//设置样式---------注意引号,否则被当做变量
+				
+				element.style.fontFamily;//font-family不能用减号(-)
 
 
 </script>
