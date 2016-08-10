@@ -378,5 +378,54 @@ document.write("<p>abc</p>");//把字符串写到文档中,
 
 
 </script>
+
+
+潘魏增 陈本峰  
+JavaScript ：周爱民、老赵、玉伯、hax, 月影、CatChen, winter, 白露飞 单东林 席新亮 等
+DOM 和浏览器兼容性：winter, 司徒正美、屈超、怿飞 等
+HTML 和 CSS：彪叔、aoao, 怿飞、macji 等
+类库框架：玉伯、JK, cnberg, yiminghe, 元彦 等
+前端布道士：克军、玉伯、怿飞、秦歌、小马 等
+不知分到哪一类的：hujinpu, 李牧、winter, dexteryy, 李超、老鱼、太伯、陈成 等一堆人
+
+肯定漏了 n 多牛人。 
+百度的玉北，GrayZhang，携程的大漠，林小志
+
+		
+jq 的 AJAX 除了完成基本的 ajax 操作外，还封装了
+jsonp 跨域获取远程数据
+提供了 json 的序列化和反序列化
+提供了动态加载 js 文件
+提供了表单序列化
+等等功能，远远超出了 ajax 的一般概念 
+
+<script>
+//1
+//创建 XMLHttpRequest 对象
+		var xmlhttp;
+		if (window.XMLHttpRequest)
+		  {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		  }
+		else
+		  {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		  }
+// 将请求发送到服务器，使用 XMLHttpRequest对象的 open()和send()方法
+
+		// 规定请求的类型、URL 以及是否异步处理请求。
+		xmlhttp.open("GET","ajax_info.txt",true);
+
+					// open(method,url,async)
+				    // method：请求的类型；GET 或 POST
+				    // url：   文件在服务器上的位置
+				    // async： true（异步）或 false（同步）
+
+		//将请求发送到服务器		    
+		xmlhttp.send(string);
+					// string：仅用于 POST 请求
+
+</script>
+
 </body>
 </html>
