@@ -380,18 +380,18 @@ document.write("<p>abc</p>");//把字符串写到文档中,
 </script>
 
 
-潘魏增 陈本峰  
-JavaScript ：周爱民、老赵、玉伯、hax, 月影、CatChen, winter, 白露飞 单东林 席新亮 等
-DOM 和浏览器兼容性：winter, 司徒正美、屈超、怿飞 等
-HTML 和 CSS：彪叔、aoao, 怿飞、macji 等
-类库框架：玉伯、JK, cnberg, yiminghe, 元彦 等
-前端布道士：克军、玉伯、怿飞、秦歌、小马 等
-不知分到哪一类的：hujinpu, 李牧、winter, dexteryy, 李超、老鱼、太伯、陈成 等一堆人
+潘魏增 陈本峰 玉北 GrayZhang 携程的大漠 林小志
+JavaScript:          周爱民、老赵、玉伯、hax, 月影、CatChen, winter, 白露飞 单东林 席新亮 等
+DOM 和浏览器兼容性:  winter, 司徒正美、屈超、怿飞 等
+HTML 和 CSS:         彪叔、aoao, 怿飞、macji 等
+类库框架:            玉伯、JK, cnberg, yiminghe, 元彦 等
+前端布道士:          克军、玉伯、怿飞、秦歌、小马 等
+不知分到哪一类的:    hujinpu, 李牧、winter, dexteryy, 李超、老鱼、太伯、陈成 等一堆人
 
-肯定漏了 n 多牛人。 
-百度的玉北，GrayZhang，携程的大漠，林小志
+肯定漏了 n 多牛人
 
-		
+------------------------------------------------------------------
+
 jq 的 AJAX 除了完成基本的 ajax 操作外，还封装了
 jsonp 跨域获取远程数据
 提供了 json 的序列化和反序列化
@@ -399,33 +399,213 @@ jsonp 跨域获取远程数据
 提供了表单序列化
 等等功能，远远超出了 ajax 的一般概念 
 
+------------------------------------------------------------------
+
+每隔一段时间调用一次ajax 用setTimeout,不用setInterval-------------------p310
+
+	setInterval可能会在上一个函数没执行完,就再次调用函数了
+	setTimeout 会等待上一个函数调用完成后,再次调用
+------------------------------------------------------------
+
 <script>
-//1
-//创建 XMLHttpRequest 对象
-		var xmlhttp;
-		if (window.XMLHttpRequest)
-		  {// code for IE7+, Firefox, Chrome, Opera, Safari
-		  xmlhttp=new XMLHttpRequest();
-		  }
-		else
-		  {// code for IE6, IE5
-		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		  }
-// 将请求发送到服务器，使用 XMLHttpRequest对象的 open()和send()方法
+//1  JS 的ajax---用来理解原理 
 
-		// 规定请求的类型、URL 以及是否异步处理请求。
-		xmlhttp.open("GET","ajax_info.txt",true);
 
-					// open(method,url,async)
-				    // method：请求的类型；GET 或 POST
-				    // url：   文件在服务器上的位置
-				    // async： true（异步）或 false（同步）
+	//	跨域问题 只能向同一个域中使用相同端口和协议的URL中发送请求；如果URL与启动请求的页面有任何差别，都会引发安全错误。
 
-		//将请求发送到服务器		    
-		xmlhttp.send(string);
-					// string：仅用于 POST 请求
+	//创建 XMLHttpRequest 对象
+			var xmlhttp;
+			if (window.XMLHttpRequest)
+			  {// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			  }
+			else
+			  {// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+	// 将请求发送到服务器，使用 XMLHttpRequest对象的 open()和send()方法
 
+			// 规定请求的类型、URL 以及是否异步处理请求。
+			xmlhttp.open("GET","123.php?q="+str,true);
+
+				// open(method,url,async)   调用open()方法并不会真正发送请求，而只是启动一个请求准备发送
+			    // method：请求的类型；GET  如果传值,直接写在url后面 ,123.php页里写$q=$_GET["q"];
+			    // 
+			    // 				       POST 如果需要像HTML表单那样 POST 数据，
+				// 				        	请使用 setRequestHeader() 来添加 HTTP 头
+				// 				        	然后在send()方法中规定您希望发送的数据：
+				// 				        	
+				//						    xmlhttp.open("POST","ajax_test.html",true);
+				//						    //post方式需要自己设置http的请求头
+				//						    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				//						    						"Content-type","application/x-www-form-urlencoded"这句是在 请求头部 中设置post提交方式
+				//						    						通常HTTP协议里，客户端像服务器取得某个网页的时候，必须发送一个HTTP协议的头文件， 
+				//						    						
+				//						    xmlhttp.send("fname=Henry&lname=Ford");		        				        	
+				// 				        	
+			    // url：   文件在服务器上的位置 
+			    // 		   URL相对于执行代码的当前页面 (使用绝对路径);
+			    // 			
+			    // async:  true(异步)
+			    // 					规定在响应处于 onreadystatechange事件 中的就绪状态时执行的函数：
+			    // 					xmlhttp.onreadystatechange=function(){
+				// 					  
+				// 					  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+				// 					   
+				// 					    	document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+				//													    //如果来自服务器的响应并非 XML，请使用 responseText属性
+				// 					    							   	//XMLHttpRequest 对象的 responseText属性 返回字符串形式的响应
+				// 					    }
+				// 					}
+				// 					xmlhttp.open("GET","ajax_info.txt",true);
+				// 					xmlhttp.send();
+			    // 							
+			    // 							
+			    // 		   false(同步)
+				// 		    		   	JS会等到服务器响应就绪才继续执行。如果服务器繁忙或缓慢，应用程序会挂起或停止。
+
+				// 						注意：当您使用 async=false 时，请不要编写 onreadystatechange 函数 
+				// 													   而是把代码放到 send() 语句后面即可
+				// 						
+				// 						xmlhttp.open("GET","ajax_info.txt",false);
+				// 						xmlhttp.send();
+				// 						document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+
+			//将请求发送到服务器		    
+			xmlhttp.send(string);
+						// string：仅用于 POST 请求
+
+
+
+
+//2 JQ AJAX
+---------------------------------------------------------------------------------
+$.ajax({//注意整个信息都在大括号里
+	type:	  "get",               //数据发送的方式（post 或者 get）
+	url:	  "my.html",           //通过ajax加载my.html文件
+	data: 	  {val1:"1",val2:"2"}, //要发送的数据（参数）格式为{'val1':"1","val2":"2"}
+	dataType: "json",              //希望从服务器返回的数据类型
+	cache:    false,		 	   //用谷歌可以获取最新数据 而在IE获得是旧数据
+								   //这里ajax请求用的get方式，每次请求的URL一模一样，ie读缓存 不读数据库了 
+	success:  function(data){
+
+				$.each(data, function( i , v ){//遍历得到的data---他是json对象 
+									  键   值
+ 				});
+	},
+	error:    function (msg) {     //ajax请求失败后触发的方法
+                alert(msg);
+    }
+});
+
+后台接收数据（参数）
+
+<?php
+	val1 = $_GET['val1'];//1
+	val2 = $_GET['val2'];//2
+?>
+
+-----------------------------------------------------------
+
+jQ ajax---  $.get();
+			$.getJSON()
+			$.getScript()
+			$.post()
+			$("#id").load("load.htm"); 方法------前4个通过jq对象调用,但load可以通过任何元素调用
+
+-----------------------------------------------------------
+
+p331 get和post方法提交的区别
+
+用ajax发送信息,需要把数据串行化为一个对象--------------------------p332对比331重点
+
+.serialize();//序列化表单数据 得到一个串 如:a=1&b=2&c=3
+
+.serializeArray();得到一个数组 [
+									{
+										name:"a",
+										value:"1"
+									},
+									{
+										name:"c",
+										value:"3"
+									}
+
+							    ]
+-------------------------------------------------        p334
+
+$.post(url_to_send,data,function(result){
+	
+});
+	url_to_send 数据发送到这里
+	data 		想要发送的数据 已经串行化
+	function 	回调函数
+	result 		返回的数据放在一个名为json的对象中--不是必须写result,写data也行
+
+--------------------------------------------------p351
+
+//$.getJSON是 $.ajax({})用 GET 请求获取 JSON 数据 的快捷方式
+
+$.getJSON(url_to_load,{ name: "John", time: "2pm" },function(json){
+	
+});
+
+
+------------------------------------------------------------p350
+json
+
+{
+	books(根元素):{
+
+			book(储存数据的数组):[
+
+				{
+					title:'abc',
+					author:'yanao',
+					year:1983
+				},
+				{
+					title:'abc',
+					author:'yanao',
+					year:1983
+				},
+				{
+					title:'abc',
+					author:'yanao',
+					year:1983
+				}
+			]
+
+	}
+
+}
+books.book.length得到返回了多少本书
+
+json对象可以用 点记法(.)
+json对象里的数组类似js数组,有同样的属性 如:length
+
+----------------------------------------------------------
+array_push();向数组尾部插入 变成数组之后再变成json数据
+
+			$a=array("red","green");
+			array_push($a,"blue","yellow");
+
+json_encode(array_name); //php把关联数组转为json编码
+
+
+$.each(json对象,function(){});遍历得到的json对象数据-------p362
+
+例如 	
+	$.getJSON("a.php?action=getRunners", function(json) {//这里把get要传的值 直接放到url里了
+		if (json.runners.length > 0) {
+			$('#id').empty();
+
+			$.each(json.runners,function() {
+				var info = '<li>Name: ' +  this['fname'] + ' ' +  this['lname'] + '. Time: ' +  this['time'] + '</li>';
+
+			});
+		}
+	});
 </script>
-
 </body>
 </html>
