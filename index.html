@@ -357,13 +357,6 @@ document.write("<p>abc</p>");//把字符串写到文档中,
 //nextSibling       下一个同级节点  不一定是元素节点 也可能是文本节点
 //previousSibling   前一个同级节点
 
-//Ajax
-		//XMLHttpRequest对象
-							//以往请求由浏览器发出,而js通过XMLHttpRequest对象自己发送和处理
-		
-
-
-
 
 
 //style样式 是对象----------注意
@@ -405,8 +398,11 @@ jsonp 跨域获取远程数据
 
 	setInterval可能会在上一个函数没执行完,就再次调用函数了
 	setTimeout 会等待上一个函数调用完成后,再次调用
-------------------------------------------------------------
-
+--------------------------------------------------------------------------------------------------------------------------
+//Ajax 
+		//XMLHttpRequest对象
+							//以往请求由浏览器发出,而js通过XMLHttpRequest对象自己发送和处理
+							
 <script>
 //1  JS 的ajax---用来理解原理 
 
@@ -484,13 +480,13 @@ $.ajax({//注意整个信息都在大括号里
 	type:	  "get",               //数据发送的方式（post 或者 get）
 	url:	  "my.html",           //通过ajax加载my.html文件
 	data: 	  {val1:"1",val2:"2"}, //要发送的数据（参数）格式为{'val1':"1","val2":"2"}
-	dataType: "json",              //希望从服务器返回的数据类型
+	dataType: "json",              //从服务器返回的数据类型json,是json对象 可以直接$.each(),(不需要先字符串转对象,再$.each),
 	cache:    false,		 	   //用谷歌可以获取最新数据 而在IE获得是旧数据
 								   //这里ajax请求用的get方式，每次请求的URL一模一样，ie读缓存 不读数据库了 
 	success:  function(data){
 
 				$.each(data, function( i , v ){//遍历得到的data---他是json对象 
-									  键   值
+									   键   值
  				});
 	},
 	error:    function (msg) {     //ajax请求失败后触发的方法
@@ -517,21 +513,7 @@ jQ ajax---  $.get();
 
 p331 get和post方法提交的区别
 
-用ajax发送信息,需要把数据串行化为一个对象--------------------------p332对比331重点
 
-.serialize();//序列化表单数据 得到一个串 如:a=1&b=2&c=3
-
-.serializeArray();得到一个数组 [
-									{
-										name:"a",
-										value:"1"
-									},
-									{
-										name:"c",
-										value:"3"
-									}
-
-							    ]
 -------------------------------------------------        p334
 
 $.post(url_to_send,data,function(result){
@@ -547,32 +529,35 @@ $.post(url_to_send,data,function(result){
 //$.getJSON是 $.ajax({})用 GET 请求获取 JSON 数据 的快捷方式
 
 $.getJSON(url_to_load,{ name: "John", time: "2pm" },function(json){
-	
+						//返回的结果是json对象 不是json字符串 不需要字符串转对象的过程
 });
 
 
 ------------------------------------------------------------p350
-json
+json数据
+
+json对象
+双引号才是json对象的标准，单引号是不规范的（虽然在js 中是行的通的）！养成习惯，把json 的名称和字符串值用双引号引,不要用单引号
 
 {
-	books(根元素):{
+	"books"(根元素):{
 
-			book(储存数据的数组):[
+			"book"(储存数据的数组):[
 
 				{
-					title:'abc',
-					author:'yanao',
-					year:1983
+					"title":"abc",
+					"author":"yanao",
+					"year":1983
 				},
 				{
-					title:'abc',
-					author:'yanao',
-					year:1983
+					"title":"abc",
+					"author":"yanao",
+					"year":1983
 				},
 				{
-					title:'abc',
-					author:'yanao',
-					year:1983
+					"title":"abc",
+					"author":"yanao",
+					"year":1983
 				}
 			]
 
@@ -584,28 +569,184 @@ books.book.length得到返回了多少本书
 json对象可以用 点记法(.)
 json对象里的数组类似js数组,有同样的属性 如:length
 
+
+-------------------------------------------------------------------------------------------------------------------
+
+AJAX得到的数据
+	json格式字符串转json对象-----------(jq的ajax方法  如果类型选json 或者用getjson()方法 则得到的就是json对象  不用转换)
+		var jsonData='{"data1":"Hello,","data2":"world!"}'//json格式字符串
+		
+			json格式的字符串
+					单引号写在{}外，每个属性名和值都必须用双引号(不能是单引号)，否则报错。
+	
+		JSON.parse()与eval()区别
+				
+			var value = 1;
+			
+			var jsonstr = '{"data1":"hello","data2":++value}';
+			
+			var data1 = eval_r('('+jsonstr+')');console.log(data1);//这时value值为2
+			var data2 = JSON.parse(jsonstr);console.log(data2);//报错
+			
+			从上例就可以明显地看出，eval在解析字符串时，会执行该字符串中的代码（这样的后果是相当恶劣的）
+			如上例中，由于用eval解析一个json字符串而造成原先的value的值改变。
+	
+			《高性能Javascript》一书即指出：警告：关于JSON和eval需要注意的是：
+			在代码中使用eval是很危险的，特别是用它执行第三方的JSON数据（其中可能包含恶意代码）时，
+			尽可能使用JSON.parse()方法解析字符串本身。该方法可以捕捉JSON中的语法错误，并允许你传入一个函数，用来过滤或转换解析结果。
+			
+			另外，在一个字符串中如果我们想输出“\”字符，我们必须使用转义字符，所以最终形式是：console.log("\\");
+			但是由于JSON.parse解析的是字符串的真实含义，所以每一个"\"又都要使用"\"来进行转义，
+			所以最终形式为：console.log(JSON.parse('{"a":"\\\\"}'));
+			
+		-----------------------------------------------	
+		JSON.parse() 不允许用逗号作为结尾------------注意
+		JSON.parse("[1, 2, 3, 4, ]");//报错
+		-----------------------------------------------
+		
+			eval()用法
+				var jsonStr = '{x : 1, y : 1}';
+				var jsonObj = eval('(' +  jsonStr + ')');
+		
+				如果eval的时候不加括号还会报脚本错误,这是为什么呢？
+				
+				因为eval中 是一个执行环境，不用括号时{x : 1, y : 1}整个被解释成一个复合语句，{和}在这里就是一个符合语句的分隔符，
+				而不是对象直接量的一种语法方式。就像if(true){x=1;}这里的大括号也是充当着复合语句的作用。
+				
+				接下来x:被解释成标签，像通常用的swicth case语句中的case x：也是一种标签，后面的1被当做一个数字直接量
+				
+				遇到y被解释成变量标示符，然后再继续解析y后的冒号时就出错了,因为无法识别。
+				如果你成eval('{x : 1, y = 1}')就不会报错了，因为y=1是可以被识别的, y=1后eval的结果是返回1。
+				
+				但是为什么前后加个括号就可以了呢，因为括号在这里表示强制执行，整个'(' +  jsonStr + ')',
+				jsonStr也是单引号包围的字符串 形式是''+''+''
+				其实被解释成一个表达式运算，而不是一个复合语句，因此jsonStr中的大括号{}被当成对象的语法来识别，当然就可以了。
+			
 ----------------------------------------------------------
+AJAX发送的数据
+	
+	用ajax发送信息,需要把数据串行化为一个对象-----------p332对比331重点
+
+	serialize()序列化表单元素为---字符串，如:a=1&b=2&c=3
+	
+	serializeArray()序列化表单元素为---JSON数据格式。
+											如得到一个SON数据[
+																{
+																	"name":"a",
+																	"value":"1"
+																},
+																{
+																	"name":"c",
+																	"value":"3"
+																}
+															]
+
+	//原始form表单值获取方式(手动)：
+
+		$.ajax({
+		   type: "POST",
+		   url: "ajax.php",
+		   data: "Name=摘取天上星&position=IT技术",
+		   success: function(msg){alert(msg);},
+		   error: function(error){alert(error);}
+		 });
+
+	//JQ serialize()方法取值：
+
+		$.ajax({
+		   type: "POST",
+		   url:"ajax.php",
+		   data:$('#formID').serialize(),// 要提交的表单id
+		   success: function(msg) {alert(msg);},
+		   error: function(error){alert(error);}
+		});
+
+	
+	$.param()方法 是serialize()方法的核心，用来对一个数组或对象按照key/value进行序列化。
+	
+----------------------------------------------------------------------------------------------------------
+//$.each()用法  遍历AJAX 返回的json对象
+
+		$.each(json对象,function(){});遍历得到的json对象数据(--只能遍历json对象 如果是json格式字符串 需要转换成对象--)----p362
+		
+		例如 	
+			$.getJSON("a.php?action=getRunners", function(json) {//这里把get要传的值 直接放到url里了
+				if (json.runners.length > 0) {
+					$('#id').empty();
+		
+					$.each(json.runners,function() {//注意 -----这里用的是this
+						var info = '<li>Name: ' +  this['fname'] + ' ' +  this['lname'] + '. Time: ' +  this['time'] + '</li>';
+		
+					});
+				}
+			});
+
+
+//进行遍历一维数组
+		var arr1 = [ "aaa", "bbb", "ccc" ]; 
+		$.each(arr1, function(i,val){
+		alert(i+"前面是下标后面是值"+val);
+		}); 
+
+//遍历二维数组
+		var arr2 = [['a', 'aa', 'aaa'], ['b', 'bb', 'bbb'], ['c', 'cc', 'ccc']];
+		
+		　　$.each(arr2, function(i, item){
+		　　$.each(item,function(j,val){
+		　　　　alert(j+"前面是下标后面是值"+val);
+		　});
+		}); 
+
+//循环遍历dom对象
+		$.each($("input:hidden"), function(i,val){
+			alert(val); //为dom对象
+			alert(i); //为下标0 1 2
+			alert(val.name);
+			alert(val.value);
+		});
+//结果和上面一样
+		$("input:hidden").each(function(i,val){
+		alert(i);
+		alert(val);
+		alert(val.name);
+		alert(val.value);
+		}); 
+---------------------------------------------------------------------------
+
+//php端处理	JSON数据
+
 array_push();向数组尾部插入 变成数组之后再变成json数据
 
-			$a=array("red","green");
-			array_push($a,"blue","yellow");
+		$a=array("red","green");
+		array_push($a,"blue","yellow");
+
 
 json_encode(array_name); //php把关联数组转为json编码
+		<?php
+		$arr = array ('a'=>1,'b'=>2,'c'=>3,'d'=>4,'e'=>5);
+		echo json_encode($arr);
+		?>
+		
+	//以上例程会输出：
+	//{"a":1,"b":2,"c":3,"d":4,"e":5} 
+			
+			
+json_decode($json,true); //接受一个 JSON 格式的字符串并且把它转换为 PHP变量 
+
+		<?php
+		$json = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
+		var_dump(json_decode($json, true));
+		?> 
+		//结果为:
+		// array(5) {
+		// 	["a"] => int(1)
+		// 	["b"] => int(2)
+		// 	["c"] => int(3)
+		// 	["d"] => int(4)
+		// 	["e"] => int(5)
+		// }
 
 
-$.each(json对象,function(){});遍历得到的json对象数据-------p362
-
-例如 	
-	$.getJSON("a.php?action=getRunners", function(json) {//这里把get要传的值 直接放到url里了
-		if (json.runners.length > 0) {
-			$('#id').empty();
-
-			$.each(json.runners,function() {
-				var info = '<li>Name: ' +  this['fname'] + ' ' +  this['lname'] + '. Time: ' +  this['time'] + '</li>';
-
-			});
-		}
-	});
 </script>
 </body>
 </html>
